@@ -19,7 +19,7 @@ package sidecarcontrol
 import (
 	"testing"
 
-	appsv1alpha1 "github.com/openkruise/kruise-api/apps/v1alpha1"
+	appsv1alpha1 "github.com/openkruise/kruise/apis/apps/v1alpha1"
 )
 
 func TestInjectHotUpgradeSidecar(t *testing.T) {

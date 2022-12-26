@@ -18,14 +18,14 @@ package utils
 
 import (
 	"fmt"
-	"github.com/docker/distribution/reference"
-	"k8s.io/klog/v2"
-	"k8s.io/utils/integer"
 	"strings"
 
+	"github.com/docker/distribution/reference"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/sets"
+	"k8s.io/klog/v2"
+	"k8s.io/utils/integer"
 )
 
 func MergeVolumeMounts(original, additional []v1.VolumeMount) []v1.VolumeMount {
