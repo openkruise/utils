@@ -251,7 +251,12 @@ func buildSidecars(control SidecarControl, pod *corev1.Pod, oldPod *corev1.Pod, 
 				sidecarInitContainers = append(sidecarInitContainers, initContainer)
 				// insert volumes that initContainers used
 				for _, mount := range initContainer.VolumeMounts {
-					volumesInSidecars = append(volumesInSidecars, *volumesMap[mount.Name])
+					volume, ok := volumesMap[mount.Name]
+					if !ok {
+						return nil, nil, nil, nil, nil,
+							fmt.Errorf("%q Volume not found for VolumeMount(%s) in SidecarSet: %v", mount.Name, mount.Name, sidecarSet.Name)
+					}
+					volumesInSidecars = append(volumesInSidecars, *volume)
 				}
 			}
 			//process imagePullSecrets
@@ -293,7 +298,12 @@ func buildSidecars(control SidecarControl, pod *corev1.Pod, oldPod *corev1.Pod, 
 			isInjecting = true
 			// insert volume that sidecar container used
 			for _, mount := range sidecarContainer.VolumeMounts {
-				volumesInSidecars = append(volumesInSidecars, *volumesMap[mount.Name])
+				volume, ok := volumesMap[mount.Name]
+				if !ok {
+					return nil, nil, nil, nil, nil,
+						fmt.Errorf("%q Volume not found for VolumeMount(%s) in SidecarSet: %v", mount.Name, mount.Name, sidecarSet.Name)
+				}
+				volumesInSidecars = append(volumesInSidecars, *volume)
 			}
 			// merge VolumeMounts from sidecar.VolumeMounts and shared VolumeMounts
 			sidecarContainer.VolumeMounts = utils.MergeVolumeMounts(sidecarContainer.VolumeMounts, injectedMounts)
